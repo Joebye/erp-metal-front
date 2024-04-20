@@ -4,5 +4,6 @@ type Email = {
     phoneNum: string
     subject: string
     text: string
+    dateTime?: string
 }
 export default Email

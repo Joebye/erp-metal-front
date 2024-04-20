@@ -3,6 +3,7 @@ import Email from "../model/Email";
 import { useState } from "react";
 import { emailService } from "../config/service-config";
 import emailConfig from '../config/email-config.json'
+import moment from "moment";
 
 const SendEmail: React.FC = () => {
     const {subjectType} = emailConfig;
@@ -15,17 +16,20 @@ const SendEmail: React.FC = () => {
         const inputedCustomerEmailAddress: string = data.get("customerEmailAddress") as string
         const inputedCustomerPhoneNum: string = data.get("customerPhoneNum") as string
         const choosenSubject: string = data.get("subject") as string
-        const inputedEmailText: string = data.get('emailText') as string;
+        const inputedEmailText: string = data.get('emailText') as string
+        const dateTimeNow: string = moment().format("DD MMMM YYYY HH:mm Z")
 
         let newEmail: Email = {
             customerName: inputedCustomerName,
             customerEmailAddress: inputedCustomerEmailAddress,
             phoneNum: inputedCustomerPhoneNum,
             subject: choosenSubject,
-            text: inputedEmailText
+            text: inputedEmailText,
+            dateTime: dateTimeNow
         }
 
         setEmail(newEmail);
+        console.log(newEmail);
         await emailService.addEmail(newEmail);
         event.target.reset();
       }
