@@ -1,0 +1,16 @@
+{
+    "always": [],
+    "user":[
+    {"to": "/sendemail", "label": "Send Email", "order":1},
+    {"to": "/checkstatus", "label": "Check Status", "order":2}
+        ],
+    "admin":[
+    {"to": "/requests", "label": "Requests Managing", "order":1}
+        ],
+    "authenticated": [
+        {"to": "/signout", "label": "Sign Out", "order": 4}
+        ],
+    "noauthenticated":[
+    {"to": "/signin", "label": "Sign In", "order": 1}
+        ]
+}
