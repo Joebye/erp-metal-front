@@ -4,10 +4,13 @@ import { useState } from "react";
 import { emailService } from "../config/service-config";
 import emailConfig from '../config/email-config.json'
 import moment from "moment";
+import { useSelectorUser } from "../redux/store";
 
 const SendEmail: React.FC = () => {
     const {subjectType} = emailConfig;
     const [email, setEmail] = useState<Email|undefined>();
+    const curUser = useSelectorUser();
+    
 
     async function onSubmitFn(event: any) {
         event.preventDefault();
@@ -17,7 +20,8 @@ const SendEmail: React.FC = () => {
         const inputedCustomerPhoneNum: string = data.get("customerPhoneNum") as string
         const choosenSubject: string = data.get("subject") as string
         const inputedEmailText: string = data.get('emailText') as string
-        const dateTimeNow: string = moment().format("DD MMMM YYYY HH:mm Z")
+        const dateTimeNow: string = moment().format("DD MMMM YYYY HH:mm");
+        const curUserEmail = curUser?.email;
 
         let newEmail: Email = {
             customerName: inputedCustomerName,
@@ -25,7 +29,9 @@ const SendEmail: React.FC = () => {
             phoneNum: inputedCustomerPhoneNum,
             subject: choosenSubject,
             text: inputedEmailText,
-            dateTime: dateTimeNow
+            dateTime: dateTimeNow,
+            curUserEmail: curUserEmail
+
         }
 
         setEmail(newEmail);
@@ -110,7 +116,7 @@ const SendEmail: React.FC = () => {
                 fullWidth
                 multiline
                 rows={13}
-                label="Type your reqest here...."
+                label="Type your request here...."
             />
             <Button
                 sx={{ mt: '5vh' }}
