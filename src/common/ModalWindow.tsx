@@ -3,7 +3,7 @@ import { ReactNode } from "react";
 import Modal from '@mui/material/Modal';
 
 type Props = {
-   
+    
     element:ReactNode;
     active:boolean;
     setActive:(active: boolean) => void
@@ -24,7 +24,6 @@ const ModalWindow:React.FC<Props> = ({active, setActive, element}) => {
         boxShadow: 24,
         p: 4,
       };
-
 
     return <Modal
     open={active}

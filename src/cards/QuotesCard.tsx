@@ -1,13 +1,19 @@
-import { Button, Card, CardActions, CardContent, Typography } from "@mui/material"
+import { Button, Card, CardActions, CardContent, CircularProgress, Typography } from "@mui/material"
 import Product from "../model/Product"
 
 type Props = {
     products: Product[];
-    actionFn: (products: Product[]) => void
+    actionFn?: (products: Product[]) => void
 }
 const QuotesCard: React.FC<Props> = ({products, actionFn}) => {
     if (!products) {
-        return null;
+        return (
+            <Card sx={{ minWidth: 275 }}>
+                <CardContent>
+                    <CircularProgress /> 
+                </CardContent>
+            </Card>
+        );
     }
 
       return (<Card sx={{ minWidth: 275 }}>
@@ -36,8 +42,8 @@ const QuotesCard: React.FC<Props> = ({products, actionFn}) => {
         </div>
         ))}
           </CardContent>
-          <CardActions>
-            <Button size="small"onClick={() => actionFn(products)}>Send to Client</Button>
+          <CardActions sx={{ justifyContent: 'center',marginTop:'-3vh'}}>
+            <Button size="small"onClick={() => actionFn!(products)}>Send to Client</Button>
            </CardActions>
         </Card>
       );

@@ -22,6 +22,7 @@ const Requests: React.FC = () => {
 
        const [openDetails, setFlDetails] = useState(false);
        const products = useRef<Product[]>();
+       const curCustomerEmail = useRef<string>('');
         const rows = useSelectorAllEmails();
         
         const columns: GridColDef[] = [
@@ -51,11 +52,6 @@ const Requests: React.FC = () => {
                 align: 'center', headerAlign: 'center'
             },
             {
-                field: "status", headerName: 'Status', flex: 0.5, headerClassName: 'data-grid-header',
-                align: 'center', headerAlign: 'center'
-            },
-            
-            {
                 field: "curUserEmail", headerName: 'Account Owner', flex: 0.5, headerClassName: 'data-grid-header',
                 align: 'center', headerAlign: 'center'
             },
@@ -66,11 +62,14 @@ const Requests: React.FC = () => {
                         const idStr = params.id.toString();
                        generateResponseFQ(idStr);
                        setFlDetails(true);
+                       curCustomerEmail.current = params.row.curUserEmail;
+                       
+                       
                         
                     };
             
                     return (
-                        params.row.subject == "request for quote" && params.row.status == "pending" ? 
+                        params.row.subject == "request for quote" ? 
                         <Button sx={{fontSize: '10px'}} variant="contained" color="primary" onClick={onClickFn}>
                             Generate RFQ
                         </Button> : null
@@ -82,10 +81,7 @@ const Requests: React.FC = () => {
         async function generateResponseFQ(id: string) {
             try {
                 const res = await emailService.generaeteRFQ(id);
-                console.log(res);
                 products.current = res;
-                
-                
                 } catch (error){
                 throw error
             }
@@ -93,7 +89,9 @@ const Requests: React.FC = () => {
 
 
         function sendToClientFn() {
-
+            console.log(products.current);
+            localStorage.setItem(`dataPayload${curCustomerEmail.current}`, JSON.stringify(products.current));
+            
         }
     
 
