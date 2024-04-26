@@ -1,3 +1,9 @@
+
+# Definition
+After running the project, you will initially land on the 'Sign in' page. There, you'll find two fields: 'email' and 'password'. You can sign in using any email (e.g., 'user@com'). In this case, you'll have a user's account with corresponding functionality.
+On the other side, if you use the word 'admin' when signing up (e.g., 'admin@com'), you'll have an admin's account with administrative privileges.
+For demonstration purposes, it's necessary to have both user and admin accounts to showcase the full functionality of the app
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
