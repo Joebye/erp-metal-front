@@ -1,4 +1,5 @@
 import Email from "../../model/Email";
+import Product from "../../model/Product";
 import EmailService from "./EmailService";
 import { Subscriber, Observable } from "rxjs";
 const SERVER_NOT_AVAILABLE = 'Server is unavailable, repeat later on'
@@ -11,7 +12,7 @@ export default class UserServiceRest implements EmailService {
     this.urlServise = `http://${baseUrl}`
 }
 
-    async generaeteRFQ(id: string): Promise<string> {
+    async generaeteRFQ(id: string): Promise<Product[]> {
         try {
             const response = await fetch(`${this.urlServise}/requests/${id}`);
             
