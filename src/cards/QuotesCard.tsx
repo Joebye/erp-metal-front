@@ -1,24 +1,37 @@
 import { Button, Card, CardActions, CardContent, CircularProgress, Typography } from "@mui/material"
 import Product from "../model/Product"
+import { useEffect, useState } from "react";
+import { emailService } from "../config/service-config";
+
 
 type Props = {
-    products: Product[];
-    actionFn?: (products: Product[]) => void
+     id: string;
+     curUser: string;
 }
-const QuotesCard: React.FC<Props> = ({products, actionFn}) => {
-    if (!products) {
-        return (
-            <Card sx={{ minWidth: 275 }}>
-                <CardContent>
-                    <CircularProgress /> 
-                </CardContent>
-            </Card>
-        );
-    }
+const QuotesCard: React.FC<Props> = ({id, curUser}) => {
+    const [prods, setProds] = useState<Product[]>([]);
+
+    useEffect(() => {
+        const fetchProds = async () => {
+            try {
+                const res = await emailService.generaeteRFQ(id);
+                setProds(res);
+            } catch(err) {
+                console.log(err);
+                
+            }
+        }
+        fetchProds(); 
+   }, [])
+    
+   function submitFn (prods: any) {
+    localStorage.setItem(`dataPayload${curUser}`, JSON.stringify(prods));
+   }
+    
 
       return (<Card sx={{ minWidth: 275 }}>
           <CardContent> 
-        {products.map(product => (
+        {prods.map(product => (
             <div key={product.id}>
             <Typography fontSize={15} ml={7}>
                     Product: {product.nameProduct}
@@ -43,9 +56,12 @@ const QuotesCard: React.FC<Props> = ({products, actionFn}) => {
         ))}
           </CardContent>
           <CardActions sx={{ justifyContent: 'center',marginTop:'-3vh'}}>
-            <Button size="small"onClick={() => actionFn!(products)}>Send to Client</Button>
+            <Button size="small"onClick={() => submitFn(prods)}>Send to Client</Button>
            </CardActions>
         </Card>
       );
     }
     export default QuotesCard;
+
+
+

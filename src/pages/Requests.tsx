@@ -1,10 +1,9 @@
 import { Box, Button, IconButton, Modal, Typography } from "@mui/material";
 import { DataGrid, GridActionsCellItem, GridColDef } from "@mui/x-data-grid";
 import { useSelectorAllEmails } from "../hooks/hooks";
-import { emailService } from "../config/service-config";
 import QuotesCard from "../cards/QuotesCard";
-import { useRef, useState } from "react";
-import Product from "../model/Product";
+import { useState } from "react";
+
 
 const Requests: React.FC = () => {
     const style = {
@@ -21,9 +20,9 @@ const Requests: React.FC = () => {
 
 
        const [openDetails, setFlDetails] = useState(false);
-       const products = useRef<Product[]>();
-       const curCustomerEmail = useRef<string>('');
         const rows = useSelectorAllEmails();
+        const [idEm, setIdEm] = useState<string>('');
+        const [curUserRfq, setCurUserRfq] = useState<string>();
         
         const columns: GridColDef[] = [
            
@@ -60,13 +59,11 @@ const Requests: React.FC = () => {
                 align: 'center', headerAlign: 'center', renderCell: params => {
                     const onClickFn = () => {
                         const idStr = params.id.toString();
-                       generateResponseFQ(idStr);
-                       setFlDetails(true);
-                       curCustomerEmail.current = params.row.curUserEmail;
-                       
-                       
-                        
-                    };
+                        setIdEm(idStr);
+                        setCurUserRfq(params.row.curUserEmail);
+                        setFlDetails(true);
+                      
+              };
             
                     return (
                         params.row.subject == "request for quote" ? 
@@ -78,21 +75,6 @@ const Requests: React.FC = () => {
                 }
         ]
             
-        async function generateResponseFQ(id: string) {
-            try {
-                const res = await emailService.generaeteRFQ(id);
-                products.current = res;
-                } catch (error){
-                throw error
-            }
-        }
-
-
-        function sendToClientFn() {
-            console.log(products.current);
-            localStorage.setItem(`dataPayload${curCustomerEmail.current}`, JSON.stringify(products.current));
-            
-        }
     
 
     return <Box sx={{ height: '90vh', margin: '15px' }}>
@@ -105,8 +87,8 @@ const Requests: React.FC = () => {
             aria-describedby="modal-modal-description"
         >
             <Box sx={style}>
-                <QuotesCard products={products.current!}
-                actionFn={sendToClientFn}/>
+                <QuotesCard
+                    id={idEm} curUser={curUserRfq!}/>
             </Box>
         </Modal>
     </Box>
